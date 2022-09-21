@@ -8,8 +8,16 @@ int main(){
     graph g;
     list<string> foo;
     foo.push_back("a");
-    foo.push_back("B");
+    foo.push_back("b");
+    foo.push_back("c");
+    foo.push_back("d");
     g.setVertices(foo);
+    foo.clear();
+    foo.push_back("ab");
+    foo.push_back("bc");
+    foo.push_back("cd");
+    foo.push_back("da");
+    g.setArestas(foo);
     ponte p = ponte(g);
 
 

@@ -8,6 +8,8 @@ class ponte {
     private:
         graph g;
         graph gCopy;
+
+        
     
     public:
         ponte(graph);

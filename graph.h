@@ -25,8 +25,8 @@ class graph{
 
         void setVertices(list<string>); //ok
         void setArestas(list<string>); //ok
-        void setSucessores(list<string>); //ok 
-        void setPredecessores(list<string>); //ok
+        void setSucessores(); //ok 
+        void setPredecessores(); //ok
 
         list<string> getVertices(); //ok
         list<string> getArestas(); //ok

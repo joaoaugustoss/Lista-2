@@ -25,10 +25,10 @@ void graph::setArestas(list<string> a){
     this->arestas = a;
 }
 
-void graph::setSucessores(list<string> s){
-    this->sucessores = s;
+void graph::setSucessores(){
+    
 }
 
-void graph::setPredecessores(list<string> p){
-    this->predecessores = p;
+void graph::setPredecessores(){
+    
 }
