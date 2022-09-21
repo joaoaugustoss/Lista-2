@@ -9,7 +9,7 @@ class ponte {
         graph g;
         graph gCopy;
 
-        
+
     
     public:
         ponte(graph);

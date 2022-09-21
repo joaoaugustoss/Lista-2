@@ -17,12 +17,21 @@ int main(){
     foo.push_back("bc");
     foo.push_back("cd");
     foo.push_back("da");
+    foo.push_back("ac");
     g.setArestas(foo);
-    ponte p = ponte(g);
+    g.setSucessores();
+    //ponte p = ponte(g);
+    list<string>* sucessores = g.getSucessores();
+    list<string> vertices = g.getVertices();
+                                                // 
+    /*for(int i = 0; i < vertices.size()-1; i++){  // 
+        for(string s : sucessores[i]){          //        
+            cout << s;                          //      
+        }
+        cout << endl;
+    }*/
 
-
-
-    p.bruteForce();
+    //p.bruteForce();
 
     list<string> s;
     s = g.getVertices();
