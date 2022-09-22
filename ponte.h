@@ -2,6 +2,7 @@
 #define PONTE_H
 
 #include "graph.h"
+#include <stack> 
 
 
 class ponte {
@@ -9,12 +10,21 @@ class ponte {
         graph g;
         graph gCopy;
 
-        list<string> caminhamento(list<string>, string);
+        // Tarjan attributes
+        vector<string> respTarjan;
+        stack<string> pilha;
+        vector<bool> naPilha;
+        vector<int> ids;
+        vector<int> low;
+        int id;
+
+        list<string> caminhamento(string);
+        void DFsearch(string, string);
     
     public:
         ponte(graph);
         list<string> bruteForce();
-        void tarjan();
+        vector<string> tarjan();
 
         graph getGCopy();
 };

@@ -13,10 +13,10 @@ list<string> graph::getVertices(){
 list<string> graph::getArestas(){
     return this->arestas;
 }
-vector<vector<string>> graph::getSucessores(){
+vector<vector<string> > graph::getSucessores(){
     return this->sucessores;
 }
-vector<vector<string>> graph::getPredecessores(){
+vector<vector<string> > graph::getPredecessores(){
     return this->predecessores;
 }
 
@@ -35,7 +35,7 @@ void graph::setSucessores(){
     int size = vertices.size();
 
     // Vetor auxiliar que conterá os vetores de sucessores de cada vértice
-    vector<vector<string>> aux;
+    vector<vector<string> > aux;
 
     // Dando resize para que fique do tamanho necessário
     aux.resize(size);
@@ -95,7 +95,7 @@ void graph::setPredecessores(){
     int size = vertices.size();
     
     // Vetor auxiliar que conterá os vetores de predecessores de cada vértice
-    vector<vector<string>> aux;
+    vector<vector<string> > aux;
     
     // Dando resize para que fique do tamanho necessário
     aux.resize(size);

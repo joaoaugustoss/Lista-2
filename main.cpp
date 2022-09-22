@@ -49,25 +49,29 @@ int main(){
     g.setArestas(foo);
     g.setSucessores();
     g.setPredecessores();
-    ponte p = ponte(g);
-    //list<string>* sucessores = g.getSucessores();
+    ponte pn = ponte(g);
+
     list<string> vertices = g.getVertices();
 
     cout << "Sucessores: " << endl;
     int size = vertices.size(); 
-    vector<vector<string>> barz = g.getSucessores();
+    vector<vector<string> > barz = g.getSucessores();
     for(int i = 0; i < size; i++){
         utilitario::printList(barz[i]);
     }
-                       
 
-    
-    //utilitario::printList(sucessores[0]);
-    list<string> pontes = p.bruteForce();
+
+    vector<string> componentes = pn.tarjan();
+    list<string> pontes = pn.bruteForce();
     cout << "Todas as pontes encontradas: " << endl;
     for(list<string>::iterator it = pontes.begin(); it != pontes.end(); it++){
         cout << *it << endl;
     }
+    cout << "TESTE" << endl;
+    utilitario::printList(componentes);
+
+
+
 
     list<string> s;
     s = g.getVertices();

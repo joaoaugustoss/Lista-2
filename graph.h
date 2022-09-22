@@ -12,8 +12,8 @@ class graph{
     private:
         list<string> vertices;
         list<string> arestas;   
-        vector<vector<string>> sucessores;
-        vector<vector<string>> predecessores;
+        vector<vector<string> > sucessores;
+        vector<vector<string> > predecessores;
 
     public:
         graph();
@@ -31,8 +31,8 @@ class graph{
 
         list<string> getVertices(); //ok
         list<string> getArestas(); //ok
-        vector<vector<string>> getSucessores(); //ok
-        vector<vector<string>> getPredecessores(); //ok
+        vector<vector<string> > getSucessores(); //ok
+        vector<vector<string> > getPredecessores(); //ok
 
         //int getIndex(list<string>, string);
 };
