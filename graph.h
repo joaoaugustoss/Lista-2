@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <list>
+#include <vector>
 #include <string>
 
 using namespace std;
@@ -11,8 +12,8 @@ class graph{
     private:
         list<string> vertices;
         list<string> arestas;   
-        list<string>* sucessores;
-        list<string>* predecessores;
+        vector<vector<string>> sucessores;
+        vector<vector<string>> predecessores;
 
     public:
         graph();
@@ -30,10 +31,10 @@ class graph{
 
         list<string> getVertices(); //ok
         list<string> getArestas(); //ok
-        list<string>* getSucessores(); //ok
-        list<string>* getPrecessores(); //ok
+        vector<vector<string>> getSucessores(); //ok
+        vector<vector<string>> getPredecessores(); //ok
 
-        int getIndex(list<string>, string);
+        //int getIndex(list<string>, string);
 };
 
 

@@ -9,7 +9,7 @@ class ponte {
         graph g;
         graph gCopy;
 
-
+        list<string> caminhamento(list<string>, string);
     
     public:
         ponte(graph);

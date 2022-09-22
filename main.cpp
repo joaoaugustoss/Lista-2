@@ -1,45 +1,76 @@
 #include <iostream>
-//#include "graph.h"
+
 #include "ponte.h"
+#include "utilitario.h"
 
 using namespace std;
 
 int main(){
     graph g;
     list<string> foo;
+    /*foo.push_back("a");
+    foo.push_back("b");
+    foo.push_back("c");
+    foo.push_back("d");
+    foo.push_back("e");
+    foo.push_back("f");
+    foo.push_back("g");
+    foo.push_back("h");
+    foo.push_back("i");
+    g.setVertices(foo);
+    foo.clear();
+    foo.push_back("ab");
+    foo.push_back("ad");
+    foo.push_back("ae");
+    foo.push_back("bc");
+    foo.push_back("bd");
+    foo.push_back("be");
+    foo.push_back("cd");
+    foo.push_back("ce");
+    foo.push_back("cf");
+    foo.push_back("df");
+    foo.push_back("ef");
+    foo.push_back("fg");
+    foo.push_back("gh");
+    foo.push_back("gi");
+    foo.push_back("hi");*/
     foo.push_back("a");
     foo.push_back("b");
     foo.push_back("c");
     foo.push_back("d");
+    foo.push_back("e");
     g.setVertices(foo);
     foo.clear();
     foo.push_back("ab");
     foo.push_back("bc");
+    foo.push_back("ca");
     foo.push_back("cd");
-    foo.push_back("da");
-    foo.push_back("ac");
+    foo.push_back("de");
     g.setArestas(foo);
     g.setSucessores();
-    //ponte p = ponte(g);
-    list<string>* sucessores = g.getSucessores();
+    g.setPredecessores();
+    ponte p = ponte(g);
+    //list<string>* sucessores = g.getSucessores();
     list<string> vertices = g.getVertices();
-                                                // 
-    /*for(int i = 0; i < vertices.size()-1; i++){  // 
-        for(string s : sucessores[i]){          //        
-            cout << s;                          //      
-        }
-        cout << endl;
-    }*/
 
-    //p.bruteForce();
+    cout << "Sucessores: " << endl;
+    int size = vertices.size(); 
+    vector<vector<string>> barz = g.getSucessores();
+    for(int i = 0; i < size; i++){
+        utilitario::printList(barz[i]);
+    }
+                       
+
+    
+    //utilitario::printList(sucessores[0]);
+    list<string> pontes = p.bruteForce();
+    cout << "Todas as pontes encontradas: " << endl;
+    for(list<string>::iterator it = pontes.begin(); it != pontes.end(); it++){
+        cout << *it << endl;
+    }
 
     list<string> s;
     s = g.getVertices();
-    // s.push_back("append");
-    // s.push_back("list");
-    // s.push_back("cpp");
-    /*for(string i : s){
-        cout << i << endl;
-    }*/
+
     return 0;
 }
