@@ -67,30 +67,40 @@ list<string> ponte::bruteForce(){
 }
 
 /*
-    Método que fará o caminhamento em profundidade utilizando listas para inserir os vértices
-    e listas dos sucessores dos vértices
+    Método que fará o caminhamento em profundidade utilizando listas.
 
-    A estratégia
+    A estratégia é:
+        Adicionar o vértice inicial em uma lista "bucket"
+        Enquanto "bucket" não vazio:
+            Remover esse vértice inicial, e adicionar seu sucessores em bucket (caso já não tenham sido adicionados)
+            Atualizar valor de vértice atual para seu primeiro sucessor
 
 */
 list<string> ponte::caminhamento(string verticeInicio){
+    // Declaração de variáveis auxiliares
     list<string> bucket;
     list<string> resp;
     list<string> vertices = gCopy.getVertices();
     vector<vector<string> > sucessores = gCopy.getSucessores();
     bool visitados[vertices.size()];
 
+    // Adicionando vértice inicial às listas auxiliares
     resp.push_back(verticeInicio);
     bucket.push_back(verticeInicio);
+    // Setando-o como visitado
     visitados[utilitario::getIndex(vertices, verticeInicio)] = true;
+    
     while(!bucket.empty()) {
+        // Remoção do vértice na última posição da lista
         list<string>::iterator itBucket = bucket.end();
         itBucket--;
         string verticeAtual = *itBucket;
         bucket.pop_back();
+
         int indice = utilitario::getIndex(vertices, verticeAtual);
         int atualSucSize = sucessores[indice].size();
 
+        // Iteração para adicionar às listas auxiliares os sucessores não visitados
         for(int i = 0; i < atualSucSize; i++){
             string sucessorAtual = sucessores[indice][i];
             int indiceSucAtual = utilitario::getIndex(vertices, sucessorAtual);
@@ -98,30 +108,71 @@ list<string> ponte::caminhamento(string verticeInicio){
                 visitados[indiceSucAtual] = true;
                 bucket.push_back(sucessorAtual);
                 resp.push_back(sucessorAtual);
-            }
-
-        }
-    }
+            } // Fim verificação de visitados
+        } // Fim iteração sucessores
+    } // Fim iteração bucket
     
+    // Retorno da lista de vértices visitados
     return resp;
 }
 
 
 
 
+/*
+    Método que fará a verificação de arestas que são pontes no grafo através do algoritmo TARJAN.
+    O algoritmo implementado do TARJAN segue a ideia apresentada no vídeo: 
+    https://www.youtube.com/watch?v=hKhLj7bfDKk&ab_channel=WilliamFiset
+    com uma pequena alteração para encontrarmos as pontes.
+
+    O conceito principal do algoritmo TARJAN é encontrar os componentes fortemente conexos, ou seja, componentes que fecham ciclos.
+    Uma ponte é uma aresta que não faz parte de um ciclo.
+    Portanto, ao encontrarmos todos os componentes fortemente conexos, todas as arestas que não fizerem parte desses componentes 
+    são arestas pontes.
+    A maneira como está implementada, todas as verificações necessárias são feitas no momento do caminhamento (DFS)
+
+    Teremos 5 estruturas auxiliares: 
+        - "id" -> ID do vértice atual
+        - vetor "low" -> Representando o menor ID existente do componente (menor id = id do vértice que começou o ciclo)
+                        - Importante para setar qual componente o vértice faz parte
+        - vetor "ids" -> Um vetor que indica se o vértice já foi visitado (seu conteúdo será o ID do vértice)
+        - stack "pilha" -> Uma pilha para manter controle de todos os vértices do componente atual
+        - vetor "onStack" -> Um vetor para manter controle dos vértices que estão na pilha
+
+    O algoritmo funcionará da seguinte maneira:
+        - Aplicaremos o DFS
+        - Setaremos em "ids" e "low" o ID do vértice atual, colocaremos na stack e acessaremos seus sucessores
+            - Caso sucessor não tenha sido visitado:
+                Iniciaremos uma nova recusão
+            - Caso sucessor seja diferente de seu antecessor (evitando loop) e sucessor já está na pilha:
+                Setaremos "low" como sendo o menor "ID" entre seu próprio "ID" e de seu antecessor
+                (Estamos "colocando" sucessor no mesmo componente que seu antecessor)
+            *- Caso valor em "low" do sucessor seja maior que "ID" de seu antecessor:
+                Adicionaremos aresta à lista de resposta
+                (Achamos uma ponte)*
+        Por final, Caso "ID" do atual seja igual a "low" do atual:
+            Desempilharemos todos elementos da stack que fazem parte do mesmo componente
+            (Chegamos ao fim do componente)
+        
+*/
 
 vector<string> ponte::tarjan(){
+    // Declaração de variáveis auxiliáres
     list<string> arestas = gCopy.getArestas();
-    respTarjan.resize(arestas.size());
-
     int size = gCopy.getVertices().size();
+
+    
+    respTarjan.resize(arestas.size());
     id = 0;
 
+    
+    // Populando vetores com valores padrões
     low.resize(size, 0);
     ids.resize(size, -1);
     naPilha.resize(size, false);
 
     vector<vector<string> > adj = gCopy.getSucessores();
+    // Iteração que passará por cada vértice para verificar os componentes (Caso não tenham sido visitados)
     for(int i = 0; i < size; i++){
         if(ids[i] == -1){
             list<string> vertices = gCopy.getVertices();
@@ -129,44 +180,58 @@ vector<string> ponte::tarjan(){
             advance(it, i);
             string atual = *it;
             DFsearch(atual, " ");
-        }
-    }
+        } // Fim verificação visitado
+    } // Fim iteração vértices
 
     return this->respTarjan;
 }
 
+/*
+    Método que fará DFS no grafo.
+    Foi alterado para se encaixar na ideia do TARJAN
+*/
 void ponte::DFsearch(string atual, string anterior){
+    // Passo inicial
     pilha.push(atual);
     int indiceAtual = utilitario::getIndex(gCopy.getVertices(), atual);
     naPilha[indiceAtual] = true;
-
     ids[indiceAtual] = low[indiceAtual] = id++;
 
     vector<string> suc = gCopy.getSucessores()[indiceAtual];
 
+    // Iterando pelos sucessores do vértice atual
     for(string sucessor : suc){
         int indiceSuc = utilitario::getIndex(gCopy.getVertices(), sucessor);
 
         if(ids[indiceSuc] == -1){
             DFsearch(sucessor, atual);
-        }
+        } // Fim verificação visitado
+
         if((sucessor.compare(anterior) != 0) && naPilha[indiceSuc]) {
             low[indiceAtual] = min(low[indiceAtual], low[indiceSuc]);
-        }
+        } // Fim verificação de mínimo
+
         if(low[indiceSuc] > ids[indiceAtual]){
             string aresta = atual + sucessor;
             respTarjan.push_back(aresta);
-        }
-    }
+        } // Fim verificação ponte
+    } // Fim iteração sucessores
+
+    // Quando achar um elemento que seu ID é igual ao valor que está na lista de LOW
+    // Significa que achamos um componente fortemente conexo
+    // (nesse caso, podemos falar que achamos o elemento que "iniciou" o componente)
+    // Então devemos remover todos os vértices que possuem o mesmo valor de LOW e que estão na pilha
     if(ids[indiceAtual] == low[indiceAtual]){
         for(string node = pilha.top();; node = pilha.top()){
             int indiceNode = utilitario::getIndex(gCopy.getVertices(), node);
             pilha.pop();
             naPilha[indiceNode] = false;
             low[indiceNode] = ids[indiceNode];
+            // Garantindo que não remova elementos que possam estar na pilha
+            // mas que não fazem parte do componente 
             if(node.compare(atual) == 0) break;
-        }
-    }
+        } // Fim desempilhamento
+    } // Fim verificação para desempilhamento
 
 }
 

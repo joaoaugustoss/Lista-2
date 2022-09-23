@@ -7,6 +7,7 @@
 
 class ponte {
     private:
+        // Global attributes
         graph g;
         graph gCopy;
 
