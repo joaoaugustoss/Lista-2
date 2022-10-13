@@ -26,7 +26,7 @@ class ponte {
         ponte(graph);
         list<string> bruteForce();
         vector<string> tarjan();
-
+        vector<string> fleury();
         graph getGCopy();
 };
 

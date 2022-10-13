@@ -240,3 +240,12 @@ graph ponte::getGCopy(){
     return this->gCopy;
 }
 
+
+/*
+    Função para retornar o caminho euleriano presente no grafo
+    Dividido em etapas:
+        1- encontrar o vértice para começar (grau ímpar, verificar se é vértice de ponte ou não)
+*/
+vector<string> ponte::fleury(){
+    
+}
