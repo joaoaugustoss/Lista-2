@@ -60,15 +60,23 @@ int main(){
         utilitario::printList(barz[i]);
     }
 
+    cout << "Foo: " << endl;
+    cout << ((pn.isEulerian() == 1) ? "True" : "False") << endl;
+    utilitario::printList(pn.oddVertices());
 
-    vector<string> componentes = pn.tarjan();
+    vector<vector<string>> componentes = pn.tarjan();
     list<string> pontes = pn.bruteForce();
     cout << "Todas as pontes encontradas: " << endl;
     for(list<string>::iterator it = pontes.begin(); it != pontes.end(); it++){
         cout << *it << endl;
     }
-    cout << "TESTE" << endl;
-    utilitario::printList(componentes);
+    //cout << "TESTE" << endl;
+    for(vector<vector<string>>::iterator it = componentes.begin(); it != componentes.end(); it++){
+
+        if( !it->empty())
+            utilitario::printList(*it);
+    }
+    
 
 
 

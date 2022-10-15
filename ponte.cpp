@@ -63,6 +63,10 @@ list<string> ponte::bruteForce(){
 
     } // Fim iterator arestas
        
+
+    graph copy(this->g);
+    this->gCopy = copy;
+
     return resp; 
 }
 
@@ -156,10 +160,11 @@ list<string> ponte::caminhamento(string verticeInicio){
         
 */
 
-vector<string> ponte::tarjan(){
+vector<vector<string>> ponte::tarjan(){
     // Declaração de variáveis auxiliáres
     list<string> arestas = gCopy.getArestas();
     int size = gCopy.getVertices().size();
+    int qnt = 0;
 
     
     respTarjan.resize(arestas.size());
@@ -179,10 +184,10 @@ vector<string> ponte::tarjan(){
             list<string>::iterator it = vertices.begin();
             advance(it, i);
             string atual = *it;
-            DFsearch(atual, " ");
+            qnt = DFsearch(atual, " ");
         } // Fim verificação visitado
     } // Fim iteração vértices
-
+    respTarjan.resize(qnt);
     return this->respTarjan;
 }
 
@@ -190,8 +195,9 @@ vector<string> ponte::tarjan(){
     Método que fará DFS no grafo.
     Foi alterado para se encaixar na ideia do TARJAN
 */
-void ponte::DFsearch(string atual, string anterior){
+int ponte::DFsearch(string atual, string anterior){
     // Passo inicial
+    int i = 0;
     pilha.push(atual);
     int indiceAtual = utilitario::getIndex(gCopy.getVertices(), atual);
     naPilha[indiceAtual] = true;
@@ -204,7 +210,7 @@ void ponte::DFsearch(string atual, string anterior){
         int indiceSuc = utilitario::getIndex(gCopy.getVertices(), sucessor);
 
         if(ids[indiceSuc] == -1){
-            DFsearch(sucessor, atual);
+            i = DFsearch(sucessor, atual);
         } // Fim verificação visitado
 
         if((sucessor.compare(anterior) != 0) && naPilha[indiceSuc]) {
@@ -213,7 +219,7 @@ void ponte::DFsearch(string atual, string anterior){
 
         if(low[indiceSuc] > ids[indiceAtual]){
             string aresta = atual + sucessor;
-            respTarjan.push_back(aresta);
+            respTarjan[i++].push_back(aresta);
         } // Fim verificação ponte
     } // Fim iteração sucessores
 
@@ -232,7 +238,7 @@ void ponte::DFsearch(string atual, string anterior){
             if(node.compare(atual) == 0) break;
         } // Fim desempilhamento
     } // Fim verificação para desempilhamento
-
+    return i;
 }
 
 
@@ -240,12 +246,130 @@ graph ponte::getGCopy(){
     return this->gCopy;
 }
 
+vector<string> ponte::oddVertices(){
+    vector<vector<string>> aux = g.getSucessores();
+    vector<string> resp;
+    vector<vector<string>>::iterator row;
+    int index = 0;
+
+
+    for(row = aux.begin(); row != aux.end(); row++, index++){
+        
+        if(row->size() % 2 != 0) {
+            list<string> content = g.getVertices();
+            list<string>::iterator it = content.begin();
+            advance(it, index);
+            resp.push_back(*it);
+        }
+    }
+
+    return resp;
+}
+
+bool ponte::isEulerian() {
+    bool resp = false;
+    int qnt = oddVertices().size();
+
+    if(qnt == 0 || qnt == 2) resp = true;
+
+    return resp;
+}
+
 
 /*
     Função para retornar o caminho euleriano presente no grafo
     Dividido em etapas:
         1- encontrar o vértice para começar (grau ímpar, verificar se é vértice de ponte ou não)
+                                            (Se não houver, grau par qualquer)
 */
-vector<string> ponte::fleury(){
+vector<string> ponte::fleuryTarj(){
+    /*
+        Se oddVert vazio (Ciclo euleriano)
+            Escolhe primeiro vértice em Vert
+        else (Caminho euleriano)
+            Escolhe primeiro vértice em oddVert
+
+        adicionar vertice à resp
+
+        (Contexto igual à DFS)
+        Adiciona vertice ao bucket
+        Enquanto bucket não vazio
+            foo := remove bucket
+            Se foo possui aresta não contida em PONTE
+                Caminha para aresta
+                remove aresta (gCopy)
+            Senão 
+                Caminha para aresta
+                remove aresta (gCopy)
+
+            re-calcula Ponte (tarjan)
+
+            visitado[vertice incidido] = true
+            adiciona vertice incidido à resp e à bucket
     
+    */
+ 
+    vector<string> resp;
+    vector<string> bucket;
+    if(!isEulerian()) return resp;
+    string inicial;
+    vector<string> oddVert = oddVertices();
+    vector<vector<string>> sucessores = gCopy.getSucessores();
+    list<string> vertices = gCopy.getVertices();
+    bool terminou = false;
+
+    if( oddVert.empty() ){
+        inicial = *gCopy.getVertices().begin();
+    } else {
+        inicial = oddVert[0];
+    }
+       
+    
+    bucket.push_back(inicial);
+    while( !bucket.empty() ) {
+        string caminhe;
+        terminou = false;
+        vector<string>::iterator it = bucket.end();
+        string removed = *it;
+        bucket.pop_back();
+
+        vector<vector<string>> ponte = tarjan();
+        int indice = utilitario::getIndex(vertices, removed);
+        vector<string> removedSuc = sucessores[indice];
+
+        // Ideia será iterar por todos os sucessores de "REMOVED"
+        // e ver se algum NÃO é ponte, se NÃO FOR PONTE, escolheremos ele para caminhar
+        // Caso só tenha ponte, ecolheremos o último verificado
+        while(!terminou){
+            // Itera por todos os sucessores de REMOVED
+            // String testagem = removed + sucessor
+            // Se testagem não está contido em respTarjan
+            //      Pare looping, caminha para *it
+            vector<string>::iterator remIt = removedSuc.begin();
+            string testagem = removed + *remIt;
+            for(vector<vector<string>>::iterator row = ponte.begin(); row != ponte.end(); row++){
+                if(!utilitario::contains(*row, testagem)) {
+                    // Terminando o looping externo
+                    terminou = true;
+
+                    // Salvando qual o vértice devemos caminhar
+                    caminhe = *remIt;
+
+                    // Terminando o looping interno
+                    row = ponte.end();
+                    row--;
+                }
+            }
+            // Caso não encontre arestas NÃO PONTES,
+            if(remIt == removedSuc.end()) {
+                terminou = true;
+                caminhe = *remIt;
+            }
+        }       
+
+
+    }
+    
+
+    return resp;
 }
