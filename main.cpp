@@ -70,12 +70,18 @@ int main(){
     for(list<string>::iterator it = pontes.begin(); it != pontes.end(); it++){
         cout << *it << endl;
     }
-    //cout << "TESTE" << endl;
+    
+    cout << "Componentes fortemente conexos: " << componentes.size() << endl;
     for(vector<vector<string>>::iterator it = componentes.begin(); it != componentes.end(); it++){
 
-        if( !it->empty())
+        if( !it->empty()){
             utilitario::printList(*it);
+        }
     }
+
+    ponte pn1 = ponte(g);
+    vector<string> test = pn1.fleuryTarj();
+    cout << test.size() << endl;
     
 
 

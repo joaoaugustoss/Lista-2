@@ -308,7 +308,6 @@ vector<string> ponte::fleuryTarj(){
             adiciona vertice incidido à resp e à bucket
     
     */
- 
     vector<string> resp;
     vector<string> bucket;
     if(!isEulerian()) return resp;
@@ -327,13 +326,16 @@ vector<string> ponte::fleuryTarj(){
     
     bucket.push_back(inicial);
     while( !bucket.empty() ) {
+
         string caminhe;
         terminou = false;
         vector<string>::iterator it = bucket.end();
         string removed = *it;
         bucket.pop_back();
+        //cout << bucket.size() << endl;
 
-        vector<vector<string>> ponte = tarjan();
+        vector<vector<string>> ponte = this->tarjan();
+        cout << ponte.size() << endl;
         int indice = utilitario::getIndex(vertices, removed);
         vector<string> removedSuc = sucessores[indice];
 
@@ -347,6 +349,7 @@ vector<string> ponte::fleuryTarj(){
             //      Pare looping, caminha para *it
             vector<string>::iterator remIt = removedSuc.begin();
             string testagem = removed + *remIt;
+            cout<<testagem<<endl;
             for(vector<vector<string>>::iterator row = ponte.begin(); row != ponte.end(); row++){
                 if(!utilitario::contains(*row, testagem)) {
                     // Terminando o looping externo
@@ -360,14 +363,16 @@ vector<string> ponte::fleuryTarj(){
                     row--;
                 }
             }
+            //cout << *removedSuc.end() << endl;
             // Caso não encontre arestas NÃO PONTES,
             if(remIt == removedSuc.end()) {
                 terminou = true;
                 caminhe = *remIt;
             }
-        }       
-
-
+        }
+        bucket.push_back(*remIt);
+        resp.push_back(*remIt);
+        cout << "teste" << endl;
     }
     
 
