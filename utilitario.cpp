@@ -48,14 +48,19 @@ bool utilitario::contains(std::vector<std::string> _vector, std::string _content
 
 void utilitario::printList(std::vector<std::string> _list){
     for(auto element : _list){
-        std::cout << element;
+        if(element.compare(" ") == 0) {
+            std::cout << "VAZIO";
+        } else {
+            std::cout << element;
+        }
+        
     }
-    std::cout << '\n';
+    std::cout << std::endl;
 }
 
 void utilitario::printList(std::list<std::string> _list){
     for(auto element : _list){
-        std::cout << element;
+        std::cout << element << std::endl;
     }
     std::cout << '\n';
 }

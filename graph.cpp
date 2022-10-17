@@ -77,8 +77,11 @@ void graph::setSucessores(){
         }
     }
     
-    for(int i = 0; i < size; i++)
+    
+
+    for(int i = 0; i < size; i++){
         sort(aux[i].begin(), aux[i].end());
+    }
     this->sucessores = aux;
 }
 

@@ -12,22 +12,27 @@ class ponte {
         graph gCopy;
 
         // Tarjan attributes
-        vector<string> respTarjan;
+        vector<vector<string>> respTarjan;
         stack<string> pilha;
         vector<bool> naPilha;
         vector<int> ids;
         vector<int> low;
         int id;
 
-        list<string> caminhamento(string);
-        void DFsearch(string, string);
+        vector<string> caminhamento(string);
+        int DFsearch(string, string);
     
     public:
         ponte(graph);
-        list<string> bruteForce();
-        vector<string> tarjan();
-        vector<string> fleury();
+        vector<vector<string>> bruteForce();
+        vector<vector<string>> tarjan();
+        vector<string> fleuryTarj();
+        vector<string> fleuryBruteF();
         graph getGCopy();
+        bool isEulerian();
+        vector<string> oddVertices();
+
+
 };
 
 #endif // PONTE_H
