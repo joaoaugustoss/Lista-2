@@ -19,12 +19,12 @@ class ponte {
         vector<int> low;
         int id;
 
-        list<string> caminhamento(string);
+        vector<string> caminhamento(string);
         int DFsearch(string, string);
     
     public:
         ponte(graph);
-        list<string> bruteForce();
+        vector<vector<string>> bruteForce();
         vector<vector<string>> tarjan();
         vector<string> fleuryTarj();
         vector<string> fleuryBruteF();

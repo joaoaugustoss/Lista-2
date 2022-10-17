@@ -60,7 +60,7 @@ void utilitario::printList(std::vector<std::string> _list){
 
 void utilitario::printList(std::list<std::string> _list){
     for(auto element : _list){
-        std::cout << element;
+        std::cout << element << std::endl;
     }
     std::cout << '\n';
 }
