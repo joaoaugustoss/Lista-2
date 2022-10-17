@@ -34,3 +34,4 @@
 .vscode
 graph.out.dSYM
 Contents
+.DS_Store

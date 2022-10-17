@@ -1,0 +1,95 @@
+\documentclass[12pt]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{booktabs}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{setspace}
+\usepackage{textcomp}
+\usepackage{url,hyperref} 
+\usepackage{pdfpages}
+\usepackage{subfigure}
+\usepackage{comment}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+\newcommand{\putobj}[3]{%%
+  \setlength{\unitlength}{1mm}
+  \begin{picture}(0,0)
+  \put(#1,#2){#3}
+  \end{picture}
+}
+
+\newlength{\pllen}
+\newlength{\constlen}
+\newlength{\actionlen}
+\setlength{\constlen}{10mm}
+\setlength{\actionlen}{\textwidth}
+\newcommand{\pl}[1]{\setlength{\pllen}{#1\constlen}\putobj{0}{0}{\rule[.8mm]{\pllen}{.5mm}}}
+\newlength{\tablen}
+
+\newcommand{\hlw}[1]{\rule{\textwidth}{#1}}
+\providecommand{\norm}[1]{\lVert#1\rVert}
+\renewcommand*\familydefault{\sfdefault}
+
+\begin{document}
+\begin{titlepage}
+\begin{large}
+\noindent\hlw{.5mm} %%
+
+\vspace*{5mm}
+\begin{center}
+Pontifícia Universidade Católica de Minas Gerais\\
+Departamento de Ciência da Computação
+
+\vspace*{\fill}
+
+{\Large\textbf{Assignment 2 - Pontes}}
+
+\vspace*{2cm}
+
+\begin{center}
+João Augusto dos Santos Silva
+
+Thiago Ribeiro de Campos Nolasco
+\end{center}
+
+\vspace*{4cm}
+
+\begin{tabular}{rp{9cm}}
+Prof.\ Silvio Jamil Ferzoli Guimarães\\
+Teoria dos Grafos e Contabilidade
+\end{tabular}
+
+\vspace*{\fill}
+
+Belo Horizonte, MG, outubro de 2022
+
+\noindent\hlw{.5mm}
+\end{center}
+\end{large}
+\end{titlepage}
+
+\begin{spacing}{1.25}
+\newpage 
+\tableofcontents
+
+\newpage
+\input{textos}
+
+\end{spacing}
+
+\bibliographystyle{agsm} 
+\bibliography{bibliografia} 
+
+\end{document}
+
